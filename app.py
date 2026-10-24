@@ -231,8 +231,8 @@ div[data-testid="stFormSubmitButton"] > button:hover { transform: translateY(-1p
 .factor-card { background: var(--panel); border:1px solid var(--line); border-radius: 18px; padding: 8px 22px; }
 .frow { display:flex; align-items:center; justify-content:space-between; padding: 13px 0; border-bottom: 1px solid var(--line); }
 .frow:last-child { border-bottom: none; }
-.fname { font-size: 15px; font-weight: 500; }
-.fval { color: var(--muted); font-size: 13.5px; margin-top: 2px; }
+.fname { font-size: 15.5px; font-weight: 600; color: #F1F5F9 !important; }
+.fval { color: #A9B8CA !important; font-size: 14px; margin-top: 2px; }
 .pill { font-size: 12.5px; font-weight: 600; padding: 4px 11px; border-radius: 999px; white-space: nowrap; }
 .pill.ok   { color: #2DD4BF; background: rgba(45,212,191,0.12); }
 .pill.warn { color: #F5B84B; background: rgba(245,184,75,0.12); }
@@ -248,6 +248,12 @@ div[data-testid="stFormSubmitButton"] > button:hover { transform: translateY(-1p
     border: 1px dashed var(--line); border-radius: 18px; padding: 34px; text-align:center;
     color: var(--muted); font-size: 15px; margin-top: 18px;
 }
+
+/* ---------- Force readable text everywhere (overrides Streamlit's default dark text) ---------- */
+.hero-title, .sec-title, .side-title { color: #F1F5F9 !important; }
+.hero-sub, .sec-sub, .mini-label, .verdict-msg, .footer, .empty { color: #A9B8CA !important; }
+.mini-value { color: #F1F5F9; }  /* no !important so the inline risk colour still wins */
+.stApp p, .stApp li, .stApp label { color: #E6EDF3; }
 
 @media (max-width: 768px) { .hero-title { font-size: 32px; } }
 </style>
