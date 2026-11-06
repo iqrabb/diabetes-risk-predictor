@@ -61,9 +61,9 @@ def factor_review(age, bmi, hba1c, glucose, hypertension, heart_disease):
     rows = []
 
     if hba1c >= 6.5:
-        rows.append(("HbA1c", f"{hba1c:.1f}%", "Diabetic range", "bad"))
+        rows.append(("HbA1c", f"{hba1c:.1f}%", "At/above 6.5% threshold", "bad"))
     elif hba1c >= 5.7:
-        rows.append(("HbA1c", f"{hba1c:.1f}%", "Prediabetic range", "warn"))
+        rows.append(("HbA1c", f"{hba1c:.1f}%", "At/above 5.7% threshold", "warn"))
     else:
         rows.append(("HbA1c", f"{hba1c:.1f}%", "Below 5.7% threshold", "ok"))
 
