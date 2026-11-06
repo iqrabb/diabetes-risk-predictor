@@ -57,7 +57,7 @@ def risk_level(p: float):
 
 
 def factor_review(age, bmi, hba1c, glucose, hypertension, heart_disease):
-    """Rule-based reading of each input against common clinical reference ranges."""
+    """Display simplified input flags; these are not diagnostic interpretations."""
     rows = []
 
     if hba1c >= 6.5:
@@ -65,14 +65,14 @@ def factor_review(age, bmi, hba1c, glucose, hypertension, heart_disease):
     elif hba1c >= 5.7:
         rows.append(("HbA1c", f"{hba1c:.1f}%", "Prediabetic range", "warn"))
     else:
-        rows.append(("HbA1c", f"{hba1c:.1f}%", "Normal", "ok"))
+        rows.append(("HbA1c", f"{hba1c:.1f}%", "Below 5.7% threshold", "ok"))
 
     if glucose >= 200:
-        rows.append(("Blood glucose", f"{glucose} mg/dL", "Very high", "bad"))
+        rows.append(("Blood glucose", f"{glucose} mg/dL", "High (context-dependent)", "bad"))
     elif glucose >= 126:
-        rows.append(("Blood glucose", f"{glucose} mg/dL", "Elevated", "warn"))
+        rows.append(("Blood glucose", f"{glucose} mg/dL", "Above 126 mg/dL threshold", "warn"))
     else:
-        rows.append(("Blood glucose", f"{glucose} mg/dL", "Within range", "ok"))
+        rows.append(("Blood glucose", f"{glucose} mg/dL", "Below 126 mg/dL threshold", "ok"))
 
     if bmi >= 30:
         rows.append(("BMI", f"{bmi:.1f}", "Obese range", "bad"))
@@ -102,7 +102,7 @@ def gauge_svg(p: float, colour: str) -> str:
       <path d="M 10 100 A 90 90 0 0 1 190 100" fill="none" stroke="{colour}" stroke-width="14" stroke-linecap="round"
             stroke-dasharray="{arc_len}" stroke-dashoffset="{offset:.2f}"/>
       <text x="100" y="86" text-anchor="middle" class="g-num" fill="#E6EDF3">{p*100:.0f}%</text>
-      <text x="100" y="108" text-anchor="middle" class="g-cap" fill="#8A9BB0">chance of diabetes</text>
+      <text x="100" y="108" text-anchor="middle" class="g-cap" fill="#8A9BB0">model estimate</text>
     </svg>
     """
 
