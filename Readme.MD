@@ -1,127 +1,113 @@
-# 🩺 Diabetes Prediction System
+# Diabetes Risk Predictor
 
-A web-based Machine Learning application that predicts the risk of diabetes in a patient based on health parameters, using an **XGBoost Classifier** and an interactive **Streamlit** interface.
+An interactive Streamlit application that uses a saved XGBoost classifier to estimate diabetes probability from health-related inputs. The app presents a probability estimate, a simple risk band, a factor-by-factor summary, and a downloadable text report.
 
----
+> **Important:** This is an educational machine-learning demonstration, not a medical device. It does not diagnose diabetes, replace laboratory testing, or provide medical advice. Do not use its output to make healthcare decisions.
 
-## 📌 Overview
+## Features
 
-This project takes patient health data (age, BMI, glucose level, HbA1c, hypertension, heart disease, smoking history, etc.) as input and predicts whether the patient is at **high risk** or **low risk** of diabetes, along with the prediction probability/confidence.
+- Streamlit interface for entering patient-related features.
+- XGBoost model loaded from the native `diabetes_model.json` format.
+- Probability output for diabetes and non-diabetes classes.
+- App-defined Low, Moderate, and High risk bands.
+- Rule-based display of selected input values.
+- Downloadable text summary of the entered values and model output.
 
----
+## Tech stack
 
-## 🚀 Features
+- Python
+- Streamlit
+- XGBoost
+- Pandas
+- scikit-learn (listed in the project dependencies)
 
-- Clean and interactive **Streamlit UI**
-- Real-time diabetes risk prediction
-- Displays prediction probability (Diabetic vs Non-Diabetic %)
-- Patient data summary table
-- Model performance metrics shown in sidebar
-- Fast and lightweight (JSON-based model loading)
+## How the application works
 
----
+1. The app loads `diabetes_model.json` using XGBoost.
+2. The user enters age, gender, BMI, HbA1c, blood glucose, hypertension, heart disease, and smoking history.
+3. The app converts categorical inputs into the feature columns expected by the model.
+4. XGBoost returns class probabilities.
+5. The app displays the estimated probability and maps it to a risk band using fixed thresholds in the application code.
 
-## 🧠 Model Details
+The risk bands are application-defined thresholds (below 30%, 30–60%, and 60% or above). They have **not been established as clinically validated decision thresholds**.
 
-- **Algorithm:** XGBoost Classifier
-- **Model format:** `.json` (XGBoost native format — version-independent and reliable)
+## Run locally
 
-### 📊 Performance Metrics
+### 1. Clone the repository
 
-| Metric     | Score   |
-|------------|---------|
-| Accuracy   | 95.6%   |
-| Precision  | 73%     |
-| Recall     | 81%     |
-| ROC-AUC    | 97.92%  |
-
-> Note: `scale_pos_weight=4` was used during training to handle class imbalance (diabetic cases were ~10x fewer than non-diabetic cases in the dataset), which significantly improved recall for detecting actual diabetes cases.
-
----
-
-## 🛠️ Tech Stack
-
-- **Python**
-- **Streamlit** – Web app interface
-- **XGBoost** – Machine learning model
-- **Pandas** – Data handling
-- **Scikit-learn** – Preprocessing / evaluation
-
----
-
-## 📂 Project Structure
-
-```
-Diabetes_Prediction/
-├── app.py                  # Main Streamlit application
-├── diabetes_model.json     # Trained XGBoost model
-├── requirements.txt        # Python dependencies
-├── .gitignore
-└── README.md
-```
-
----
-
-## ⚙️ Installation & Setup
-
-1. **Clone the repository**
 ```bash
-git clone <your-repo-link>
-cd Diabetes_Prediction
+git clone https://github.com/iqrabb/diabetes-risk-predictor.git
+cd diabetes-risk-predictor
 ```
 
-2. **Create a virtual environment (recommended)**
-```bash
-python -m venv venv
-venv\Scripts\activate      # Windows
-source venv/bin/activate   # Mac/Linux
+### 2. Create and activate a virtual environment
+
+**Windows (PowerShell):**
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
 ```
 
-3. **Install dependencies**
+**macOS / Linux:**
+
 ```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+### 3. Install dependencies
+
+```bash
+python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-4. **Run the app**
+### 4. Start Streamlit
+
 ```bash
 streamlit run app.py
 ```
 
-The app will open automatically in your browser at `http://localhost:8501`
+Streamlit will print a local URL, usually http://localhost:8501.
+
+The app expects `diabetes_model.json` to be in the repository root alongside `app.py`.
+
+## Input features
+
+| Input | Description |
+|---|---|
+| Gender | Female, Male, or Other |
+| Age | Age in years |
+| Hypertension | No / Yes |
+| Heart disease | No / Yes |
+| BMI | Body mass index |
+| HbA1c level | HbA1c value entered by the user |
+| Blood glucose level | Blood glucose value in mg/dL |
+| Smoking history | Never, former, current, ever, or not current |
+
+## Repository contents
+
+- `app.py` — Streamlit application and input/prediction logic.
+- `diabetes_model.json` — saved XGBoost model.
+- `diabetes_prediction_dataset.csv` — dataset file included in the repository.
+- `requirements.txt` — Python dependencies.
+- `Readme.MD` — project documentation.
+
+## Model evaluation and reproducibility
+
+The repository includes a dataset and a saved model, but it currently does not include a training script or notebook that reproduces the model. The performance figures previously shown in this README have therefore been removed from the project overview: the evaluation procedure and results are not independently verifiable from the committed files alone.
+
+For a reproducible project, add the training pipeline, document the dataset source and license, define a leakage-safe train/validation/test strategy, and report class-specific precision, recall, F1-score, confusion matrix, and ROC-AUC on a held-out test set.
+
+## Limitations and responsible use
+
+- Model quality depends on the provenance, representativeness, and quality of the training data.
+- The probability output should not be interpreted as a calibrated personal risk.
+- The risk bands and factor summaries in the UI are simplified application logic, not validated clinical guidance.
+- The app does not verify laboratory results or patient history.
+- Consult a qualified healthcare professional for screening, diagnosis, and treatment decisions.
 
 ---
 
-## 📋 Input Parameters
-
-| Feature              | Description                              |
-|-----------------------|-------------------------------------------|
-| Gender               | Female / Male / Other                    |
-| Age                  | Patient age (1–100)                      |
-| Hypertension         | 0 = No, 1 = Yes                          |
-| Heart Disease        | 0 = No, 1 = Yes                          |
-| BMI                  | Body Mass Index                          |
-| HbA1c Level          | Blood sugar (average) level              |
-| Blood Glucose Level  | Current blood glucose level              |
-| Smoking History      | Never / Former / Current / Ever / Not Current |
-
----
-
-## 📈 Output
-
-- **Prediction:** High Risk ⚠️ / Low Risk ✅
-- **Diabetes Probability (%)**
-- **Non-Diabetes Probability (%)**
-- **Prediction Confidence Bar**
-- **Patient Summary Table**
-
----
-
-## 👤 Author
-
-Developed by **Iqra Bibi** ❤️
-
----
-
-## 📄 License
-
-This project is open-source and available for educational and personal use.
+Developed as an educational demonstration of tabular machine learning and Streamlit application development.
