@@ -74,13 +74,13 @@ def factor_review(age, bmi, hba1c, glucose, hypertension, heart_disease):
         rows.append(("Blood glucose", f"{glucose} mg/dL", "Below fasting threshold; context matters", "ok"))
 
     if bmi >= 30:
-        rows.append(("BMI", f"{bmi:.1f}", "Obese range", "bad"))
+        rows.append(("BMI", f"{bmi:.1f}", "BMI at or above 30", "bad"))
     elif bmi >= 25:
-        rows.append(("BMI", f"{bmi:.1f}", "Overweight range", "warn"))
+        rows.append(("BMI", f"{bmi:.1f}", "BMI 25–29.9", "warn"))
     elif bmi >= 18.5:
-        rows.append(("BMI", f"{bmi:.1f}", "Healthy range", "ok"))
+        rows.append(("BMI", f"{bmi:.1f}", "Within 18.5–24.9 BMI band", "ok"))
     else:
-        rows.append(("BMI", f"{bmi:.1f}", "Underweight range", "warn"))
+        rows.append(("BMI", f"{bmi:.1f}", "BMI below 18.5", "warn"))
 
     rows.append(("Hypertension", "Yes" if hypertension else "No", "Adds risk" if hypertension else "None reported",
                  "warn" if hypertension else "ok"))
@@ -356,8 +356,12 @@ else:
     with st.spinner("Analysing..."):
         proba = model.predict_proba(input_df)[0]
 
-    p_diabetes = float(proba[1])
-    p_healthy = float(proba[0])
+    class_labels = list(model.classes_)
+    if 0 not in class_labels or 1 not in class_labels:
+        st.error(f"Expected binary model classes 0 and 1, but found: {class_labels}")
+        st.stop()
+    p_diabetes = float(proba[class_labels.index(1)])
+    p_healthy = float(proba[class_labels.index(0)])
     label, colour, message = risk_level(p_diabetes)
 
     st.write("")
