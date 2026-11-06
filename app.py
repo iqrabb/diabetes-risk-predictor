@@ -1,5 +1,4 @@
 import re
-from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
@@ -68,11 +67,11 @@ def factor_review(age, bmi, hba1c, glucose, hypertension, heart_disease):
         rows.append(("HbA1c", f"{hba1c:.1f}%", "Below 5.7% threshold", "ok"))
 
     if glucose >= 200:
-        rows.append(("Blood glucose", f"{glucose} mg/dL", "High (context-dependent)", "bad"))
+        rows.append(("Blood glucose", f"{glucose} mg/dL", "At/above 200; context matters", "bad"))
     elif glucose >= 126:
-        rows.append(("Blood glucose", f"{glucose} mg/dL", "Above 126 mg/dL threshold", "warn"))
+        rows.append(("Blood glucose", f"{glucose} mg/dL", "At/above 126 (if fasting)", "warn"))
     else:
-        rows.append(("Blood glucose", f"{glucose} mg/dL", "Below 126 mg/dL threshold", "ok"))
+        rows.append(("Blood glucose", f"{glucose} mg/dL", "Below fasting threshold; context matters", "ok"))
 
     if bmi >= 30:
         rows.append(("BMI", f"{bmi:.1f}", "Obese range", "bad"))
