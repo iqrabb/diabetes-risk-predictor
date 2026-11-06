@@ -92,7 +92,7 @@ The app expects `diabetes_model.json` to be in the repository root alongside `ap
 - `diabetes_model.json` — saved XGBoost model.
 - `diabetes_prediction_dataset.csv` — dataset file included in the repository.
 - `requirements.txt` — Python dependencies.
-- `Readme.MD` — project documentation.
+- `README.md` — project documentation.
 
 ## Model evaluation and reproducibility
 
