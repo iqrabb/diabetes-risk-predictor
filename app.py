@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from pathlib import Path
 
 import pandas as pd
 import streamlit as st
@@ -16,6 +17,9 @@ st.set_page_config(
 )
 
 
+# BASE PATHS
+BASE_DIR = Path(__file__).resolve().parent
+
 # =====================================================
 # HELPERS
 # =====================================================
@@ -26,7 +30,7 @@ def html(markup: str) -> None:
 
 
 @st.cache_resource(show_spinner=False)
-def load_model(path: str = "diabetes_model.json") -> xgb.XGBClassifier:
+def load_model(path: str = str(BASE_DIR / "diabetes_model.json")) -> xgb.XGBClassifier:
     mdl = xgb.XGBClassifier()
     mdl.load_model(path)
     return mdl
